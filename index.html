@@ -28,7 +28,7 @@ body{
 
 window.onload = function(){
 
-const ctx = document.getElementById("progressChart").getContext("2d");
+const ctx = document.getElementById("progressChart");
 
 const labels = [];
 const ceData = [];
@@ -47,13 +47,20 @@ if(row["Project Name"]){
 
 labels.push(row["Project Name"]);
 
-const ce = Number(row["Graph_CE_Progress_DB"]) || 0;
-const mep = Number(row["Graph_MEP_Progress_DB"]) || 0;
-const sp = Number(row["Graph_SP_Progress_DB"]) || 0;
+const ce = row["Graph_CE_Progress_DB"];
+const mep = row["Graph_MEP_Progress_DB"];
 
-ceData.push(ce);
-mepData.push(mep);
-spData.push(sp);
+let sp = null;
+
+Object.keys(row).forEach(key=>{
+if(key.includes("Graph_SP_Progress_DB")){
+sp = row[key];
+}
+});
+
+ceData.push(Number(ce) || 0);
+mepData.push(Number(mep) || 0);
+spData.push(Number(sp) || 0);
 
 }
 
