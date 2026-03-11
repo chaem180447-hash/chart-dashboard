@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<canvas id="progressChart"></canvas>
+
+<script>
+
+const ctx = document.getElementById("progressChart");
+
+const labels = [];
+const ceData = [];
+const mepData = [];
+const spData = [];
+
+fetch("https://opensheet.elk.sh/1haJsUtEdeS9VlBKnswXW_Q1jw9upxgaj7t-_ulD8Vg8/Projects")
+
+.then(res => res.json())
+
+.then(data => {
+
+data.forEach(row => {
+
+if(row["Project Name"]){
+
+labels.push(row["Project Name"]);
+
+ceData.push(Number(row["Graph_CE_Progress_DB"]) || null);
+mepData.push(Number(row["Graph_MEP_Progress_DB"]) || null);
+spData.push(Number(row["Graph_SP_Progress_DB"]) || null);
+
+}
+
+});
+
+new Chart(ctx, {
+
+type: "bar",
+
+data: {
+
+labels: labels,
+
+datasets: [
+
+{
+label: "CE",
+data: ceData,
+backgroundColor: "#4e79a7"
+},
+
+{
+label: "MEP",
+data: mepData,
+backgroundColor: "#e15759"
+},
+
+{
+label: "SP",
+data: spData,
+backgroundColor: "#f28e2c"
+}
+
+]
+
+},
+
+options: {
+
+indexAxis: "y",
+
+scales:{
+x:{
+beginAtZero:true,
+max:100
+}
+}
+
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
