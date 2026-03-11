@@ -28,7 +28,7 @@ body{
 
 window.onload = function(){
 
-const ctx = document.getElementById("progressChart");
+const ctx = document.getElementById("progressChart").getContext("2d");
 
 const labels = [];
 const ceData = [];
@@ -68,32 +68,26 @@ spData.push(Number(sp) || 0);
 
 new Chart(ctx,{
 type:"bar",
-
 data:{
 labels:labels,
 datasets:[
-
 {
 label:"CE",
 data:ceData,
 backgroundColor:"#4e79a7"
 },
-
 {
 label:"MEP",
 data:mepData,
 backgroundColor:"#e15759"
 },
-
 {
 label:"SP",
 data:spData,
 backgroundColor:"#f28e2c"
 }
-
 ]
 },
-
 options:{
 indexAxis:"y",
 responsive:true,
@@ -109,7 +103,6 @@ max:100
 }
 }
 }
-
 });
 
 });
