@@ -29,7 +29,14 @@ body{
 
 <script>
 
+window.onload = function(){
+
 const ctx = document.getElementById("progressChart");
+
+const labels = [];
+const ceData = [];
+const mepData = [];
+const spData = [];
 
 fetch("https://opensheet.elk.sh/1haJsUtEdeS9VlBKnswXW_Q1jw9upxgaj7t-_ulD8Vg8/Projects")
 
@@ -37,20 +44,19 @@ fetch("https://opensheet.elk.sh/1haJsUtEdeS9VlBKnswXW_Q1jw9upxgaj7t-_ulD8Vg8/Pro
 
 .then(data => {
 
-const labels = [];
-const ceData = [];
-const mepData = [];
-const spData = [];
-
 data.forEach(row => {
 
 if(row["Project Name"]){
 
 labels.push(row["Project Name"]);
 
-ceData.push(parseFloat(row["Graph_CE_Progress_DB"]) || 0);
-mepData.push(parseFloat(row["Graph_MEP_Progress_DB"]) || 0);
-spData.push(parseFloat(row["Graph_SP_Progress_DB"]) || 0);
+const ce = parseFloat(row["Graph_CE_Progress_DB"]);
+const mep = parseFloat(row["Graph_MEP_Progress_DB"]);
+const sp = parseFloat(row["Graph_SP_Progress_DB"]);
+
+ceData.push(isNaN(ce) ? 0 : ce);
+mepData.push(isNaN(mep) ? 0 : mep);
+spData.push(isNaN(sp) ? 0 : sp);
 
 }
 
@@ -58,43 +64,56 @@ spData.push(parseFloat(row["Graph_SP_Progress_DB"]) || 0);
 
 new Chart(ctx,{
 type:"bar",
+
 data:{
 labels:labels,
 datasets:[
+
 {
 label:"CE",
 data:ceData,
 backgroundColor:"#4e79a7"
 },
+
 {
 label:"MEP",
 data:mepData,
 backgroundColor:"#e15759"
 },
+
 {
 label:"SP",
 data:spData,
 backgroundColor:"#f28e2c"
 }
+
 ]
 },
+
 options:{
 indexAxis:"y",
 responsive:true,
+
+plugins:{
+legend:{
+position:"top"
+}
+},
+
 scales:{
 x:{
 beginAtZero:true,
 max:100
 }
 }
+
 }
+
 });
 
-})
-
-.catch(error => {
-console.error("Error loading data:", error);
 });
+
+};
 
 </script>
 
