@@ -76,19 +76,19 @@ datasets:[
 {
 label:"CE",
 data:ceData,
-backgroundColor:"#4e79a7"
+backgroundColor:"#2563eb"   // น้ำเงิน
 },
 
 {
 label:"MEP",
 data:mepData,
-backgroundColor:"#e15759"
+backgroundColor:"#ef4444"   // แดง
 },
 
 {
 label:"SP",
 data:spData,
-backgroundColor:"#f28e2c"
+backgroundColor:"#f59e0b"   // ส้ม
 }
 
 ]
@@ -97,21 +97,46 @@ backgroundColor:"#f28e2c"
 options:{
 indexAxis:"y",
 responsive:true,
+
 plugins:{
 legend:{
-position:"top"
+position:"top",
+labels:{
+font:{
+size:16,
+weight:"bold"
+}
+}
 }
 },
+
 scales:{
+
 x:{
 beginAtZero:true,
-max:100
+max:100,
+ticks:{
+font:{
+size:14,
+weight:"bold"
 }
 }
+},
+
+y:{
+ticks:{
+font:{
+size:15,
+weight:"bold"
+}
+}
+}
+
+}
+
 }
 
 });
-
 });
 
 };
