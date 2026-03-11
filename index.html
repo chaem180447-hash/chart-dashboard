@@ -3,6 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
+<title>Project Progress</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -22,24 +23,24 @@ body{
 
 <body>
 
+<h2>Project Progress</h2>
+
 <canvas id="progressChart"></canvas>
 
 <script>
 
-window.onload = function(){
+const ctx = document.getElementById("progressChart");
 
-const ctx = document.getElementById("progressChart").getContext("2d");
+fetch("https://opensheet.elk.sh/1haJsUtEdeS9VlBKnswXW_Q1jw9upxgaj7t-_ulD8Vg8/Projects")
+
+.then(response => response.json())
+
+.then(data => {
 
 const labels = [];
 const ceData = [];
 const mepData = [];
 const spData = [];
-
-fetch("https://opensheet.elk.sh/1haJsUtEdeS9VlBKnswXW_Q1jw9upxgaj7t-_ulD8Vg8/Projects?nocache=" + new Date().getTime())
-
-.then(res => res.json())
-
-.then(data => {
 
 data.forEach(row => {
 
@@ -47,20 +48,9 @@ if(row["Project Name"]){
 
 labels.push(row["Project Name"]);
 
-const ce = row["Graph_CE_Progress_DB"];
-const mep = row["Graph_MEP_Progress_DB"];
-
-let sp = null;
-
-Object.keys(row).forEach(key=>{
-if(key.includes("Graph_SP_Progress_DB")){
-sp = row[key];
-}
-});
-
-ceData.push(Number(ce) || 0);
-mepData.push(Number(mep) || 0);
-spData.push(Number(sp) || 0);
+ceData.push(parseFloat(row["Graph_CE_Progress_DB"]) || 0);
+mepData.push(parseFloat(row["Graph_MEP_Progress_DB"]) || 0);
+spData.push(parseFloat(row["Graph_SP_Progress_DB"]) || 0);
 
 }
 
@@ -91,11 +81,6 @@ backgroundColor:"#f28e2c"
 options:{
 indexAxis:"y",
 responsive:true,
-plugins:{
-legend:{
-position:"top"
-}
-},
 scales:{
 x:{
 beginAtZero:true,
@@ -105,9 +90,11 @@ max:100
 }
 });
 
-});
+})
 
-};
+.catch(error => {
+console.error("Error loading data:", error);
+});
 
 </script>
 
