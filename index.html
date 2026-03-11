@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  margin:20px;
+}
+
+#progressChart{
+  width:100%;
+  height:450px;
+}
+</style>
+
 </head>
 
 <body>
@@ -10,6 +25,7 @@
 <canvas id="progressChart"></canvas>
 
 <script>
+  window.onload = function(){
 
 const ctx = document.getElementById("progressChart");
 
@@ -30,62 +46,73 @@ if(row["Project Name"]){
 
 labels.push(row["Project Name"]);
 
-ceData.push(Number(row["Graph_CE_Progress_DB"]) || null);
-mepData.push(Number(row["Graph_MEP_Progress_DB"]) || null);
-spData.push(Number(row["Graph_SP_Progress_DB"]) || null);
+// ดึงค่าปกติ
+const ce = row["Graph_CE_Progress_DB"];
+const mep = row["Graph_MEP_Progress_DB"];
+
+// ค้นหา key ของ SP อัตโนมัติ
+let sp = null;
+
+Object.keys(row).forEach(key=>{
+if(key.includes("Graph_SP_Progress_DB")){
+sp = row[key];
+}
+});
+
+ceData.push(ce ? parseFloat(ce) : null);
+mepData.push(mep ? parseFloat(mep) : null);
+spData.push(sp ? parseFloat(sp) : null);
 
 }
 
 });
 
-new Chart(ctx, {
+new Chart(ctx,{
+type:"bar",
 
-type: "bar",
-
-data: {
-
-labels: labels,
-
-datasets: [
+data:{
+labels:labels,
+datasets:[
 
 {
-label: "CE",
-data: ceData,
-backgroundColor: "#4e79a7"
+label:"CE",
+data:ceData,
+backgroundColor:"#4e79a7"
 },
 
 {
-label: "MEP",
-data: mepData,
-backgroundColor: "#e15759"
+label:"MEP",
+data:mepData,
+backgroundColor:"#e15759"
 },
 
 {
-label: "SP",
-data: spData,
-backgroundColor: "#f28e2c"
+label:"SP",
+data:spData,
+backgroundColor:"#f28e2c"
 }
 
 ]
-
 },
 
-options: {
-
-indexAxis: "y",
-
+options:{
+indexAxis:"y",
+responsive:true,
 scales:{
 x:{
 beginAtZero:true,
 max:100
 }
 }
-
 }
 
 });
 
 });
+
+};
+
+// ใส่โค้ด JS จาก CodePen ตรงนี้
 
 </script>
 
