@@ -25,7 +25,8 @@ body{
 <canvas id="progressChart"></canvas>
 
 <script>
-  window.onload = function(){
+
+window.onload = function(){
 
 const ctx = document.getElementById("progressChart");
 
@@ -46,11 +47,9 @@ if(row["Project Name"]){
 
 labels.push(row["Project Name"]);
 
-// ดึงค่าปกติ
 const ce = row["Graph_CE_Progress_DB"];
 const mep = row["Graph_MEP_Progress_DB"];
 
-// ค้นหา key ของ SP อัตโนมัติ
 let sp = null;
 
 Object.keys(row).forEach(key=>{
@@ -59,9 +58,9 @@ sp = row[key];
 }
 });
 
-ceData.push(ce ? parseFloat(ce) : null);
-mepData.push(mep ? parseFloat(mep) : null);
-spData.push(sp ? parseFloat(sp) : null);
+ceData.push(Number(ce) || 0);
+mepData.push(Number(mep) || 0);
+spData.push(Number(sp) || 0);
 
 }
 
@@ -98,6 +97,11 @@ backgroundColor:"#f28e2c"
 options:{
 indexAxis:"y",
 responsive:true,
+plugins:{
+legend:{
+position:"top"
+}
+},
 scales:{
 x:{
 beginAtZero:true,
@@ -111,8 +115,6 @@ max:100
 });
 
 };
-
-// ใส่โค้ด JS จาก CodePen ตรงนี้
 
 </script>
 
